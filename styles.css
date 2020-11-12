@@ -16,7 +16,7 @@ body {
   display: flex;
   justify-content: space-between;
 }
-.welcome {
+.welcomeText {
   padding: 50px;
   font-size: 2rem;
 }
@@ -96,7 +96,7 @@ body {
   left: 190px;
   font-size: 2.6rem;
 }
-.date {
+.balanceDate {
   font-size: 1.6rem;
   color: rgb(97, 96, 96);
 }
@@ -155,7 +155,7 @@ body {
 .deposit {
   background-image: linear-gradient(to top left, #39b385, #9be15d);
 }
-.withdraw {
+.withdrawal {
   background-image: linear-gradient(to top left, #e52a5a, #ff585f);
 }
 .actions {
@@ -381,4 +381,64 @@ body {
 }
 .confirmPassword:focus::placeholder {
   color: transparent;
+}
+.mainBottom {
+  display: flex;
+  justify-content: space-between;
+}
+.gotIn {
+  margin-left: 100px;
+  margin-top: 50px;
+  font-size: 1.3rem;
+  color: #444;
+}
+.gotInAmount {
+  margin-left: 5px;
+  font-size: 2.5rem;
+  color: #39b385;
+}
+.gotOut {
+  position: relative;
+  top: 50px;
+  left: -100px;
+  font-size: 1.3rem;
+  color: #444;
+}
+.gotOutAmount {
+  margin-left: 5px;
+  font-size: 2.5rem;
+  color: #e52a5a;
+}
+.interest {
+  position: relative;
+  top: 50px;
+  left: -200px;
+  font-size: 1.3rem;
+  color: #444;
+}
+.interestAmount {
+  margin-left: 5px;
+  font-size: 2.5rem;
+  color: #0000ffa9;
+}
+.sortButton {
+  background-color: #ddd9dd;
+  border: 1px solid #ddd9dd;
+  font-size: 20px;
+  color: #444;
+  position: relative;
+  top: 10px;
+  left: -300px;
+}
+.sortButton:hover {
+  cursor: pointer;
+}
+.sortButton:focus {
+  outline: none;
+  border: none;
+}
+.loggedOutMsg {
+  font-size: 1.2rem;
+  color: #444;
+  margin-top: 100px;
 }

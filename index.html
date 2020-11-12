@@ -19,7 +19,7 @@
   </head>
   <body>
     <div class="header">
-      <p class="welcome">Log in to get started</p>
+      <p class="welcomeText">Log in to get started</p>
       <img src="logo.png" alt="pic of the logo" class="logo" />
       <form class="loginForm">
         <input type="text" class="loginInfo username" placeholder="username" />
@@ -37,7 +37,7 @@
       <div class="mainTitle">
         <p class="title">
           Your Current Balance: <br />
-          <span class="date">As of: </span>
+          <span class="balanceDate">As of: </span>
         </p>
         <p class="accountBalance">24 108.00 $</p>
       </div>
@@ -49,7 +49,7 @@
             <div class="actionAmount">1000.00 $</div>
           </div>
           <div class="transaction ex2">
-            <div class="actionType withdraw">Withdraw</div>
+            <div class="actionType withdrawal">Withdraw</div>
             <div class="actionDate">17/02/2020</div>
             <div class="actionAmount">1312.00 $</div>
           </div>
@@ -64,12 +64,12 @@
             <div class="actionAmount">5000.00 $</div>
           </div>
           <div class="transaction ex5">
-            <div class="actionType withdraw">Withdrawal</div>
+            <div class="actionType withdrawal">Withdrawal</div>
             <div class="actionDate">23/09/2019</div>
             <div class="actionAmount">980.00 $</div>
           </div>
           <div class="transaction ex6">
-            <div class="actionType withdraw">Withdrawal</div>
+            <div class="actionType withdrawal">Withdrawal</div>
             <div class="actionDate">23/07/2019</div>
             <div class="actionAmount">1720.00 $</div>
           </div>
@@ -124,7 +124,15 @@
         </div>
       </div>
 
-      <div class="mainBottom"></div>
+      <div class="mainBottom">
+        <p class="gotIn">IN <span class="gotInAmount">00000.00 $</span></p>
+        <p class="gotOut">OUT <span class="gotOutAmount">000.00 $</span></p>
+        <p class="interest">
+          Interest <span class="interestAmount">000.00 $</span>
+        </p>
+        <button class="sortButton">Sort &darr;</button>
+        <p class="loggedOutMsg">You will be logged out in: 00:00</p>
+      </div>
     </div>
     <script src="script.js"></script>
   </body>
