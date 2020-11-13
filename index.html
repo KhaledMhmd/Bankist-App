@@ -29,11 +29,17 @@
           placeholder="password"
           maxlength="4"
         />
-        <button class="loginButton">&rarr;</button> <br />
+        <button class="loginInfo loginButton">&rarr;</button> <br />
         <button class="logoutButton hidden">Log Out</button>
       </form>
     </div>
-    <div class="main">
+    <div class="popup hidden">
+      <button class="closePopup">&times;</button>
+      <h1 class="popupHeader">Username/Password are incorrect!</h1>
+      <p class="popupMessage"></p>
+    </div>
+    <div class="overlay hidden"></div>
+    <div class="main hidden">
       <div class="mainTitle">
         <p class="title">
           Your Current Balance: <br />
