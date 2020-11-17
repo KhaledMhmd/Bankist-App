@@ -51,6 +51,7 @@ const closeAccountButton = document.querySelector(".closeAccountButton");
 const gotInAmount = document.querySelector(".gotInAmount");
 const gotOutAmount = document.querySelector(".gotOutAmount");
 const interestAmount = document.querySelector(".interestAmount");
+const sortButton = document.querySelector(".sortButton");
 const popup = document.querySelector(".popup");
 const popupMessage = document.querySelector(".popupMessage");
 const popupHeader = document.querySelector(".popupHeader");
@@ -108,9 +109,12 @@ const calculateInterest = function (acc) {
 
 // function that displays the movements (part of the update UI functions)
 
-const displayMovements = function (acc) {
+const displayMovements = function (acc, sort = false) {
   accountSummary.innerHTML = "";
-  acc.movements.forEach(function (mov, i) {
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? "deposit" : "withdrawal";
     const sumHTML = `<div class="transaction">
         <div class="actionType ${type}">${type}</div>
@@ -209,7 +213,7 @@ transferButton.addEventListener("click", function (ev) {
 // Requesting a loan event
 requestButton.addEventListener("click", function (e) {
   e.preventDefault();
-  const loan = Number(loanAmount.value);
+  const loan = Math.floor(loanAmount.value);
   if (accountActive.movements.some((val) => val >= loan * 0.1)) {
     accountActive.movements.push(loan);
     updateUI(accountActive);
@@ -260,6 +264,14 @@ closeAccountButton.addEventListener("click", function (e) {
     popupMessage.innerHTML =
       "Please confirm your username and password to be able to delete your account.";
   }
+});
+
+// sort button
+let sorted = false;
+sortButton.addEventListener("click", function (e) {
+  e.preventDefault();
+  displayMovements(accountActive, !sorted);
+  sorted = !sorted;
 });
 
 // logout button and its functionality
