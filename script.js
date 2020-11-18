@@ -4,8 +4,10 @@
 const account1 = {
   owner: "Khaled Mohamed",
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
-  interestRate: 1.2, // %
+  interestRate: 1.2,
   password: 1111,
+  locale: "en-US",
+  currency: "USD",
 };
 
 const account2 = {
@@ -13,6 +15,8 @@ const account2 = {
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   password: 2222,
+  locale: "en-GB",
+  currency: "EUR",
 };
 
 const account3 = {
@@ -57,26 +61,61 @@ const popupMessage = document.querySelector(".popupMessage");
 const popupHeader = document.querySelector(".popupHeader");
 const closePopup = document.querySelector(".closePopup");
 const overlay = document.querySelector(".overlay");
-// this is the function i will use to transform any number to US Dollar format and style
-const formatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
-// this is the function i will use to get current date
-const today = new Date();
-const currentDate =
-  today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
-balanceDate.innerHTML = `As of: ${currentDate}`;
+const logOutTimer = document.querySelector(".loggedOutMsg");
 
 // declaring some variable that i will use later
 let accountActive;
 let accountTo;
+let timer;
+
+// timer function
+const startLogOutTimer = function () {
+  const tick = function () {
+    const min = `${Math.trunc(time / 60)}`.padStart(2, 0);
+    const sec = `${time % 60}`.padStart(2, 0);
+    logOutTimer.innerHTML = `You will be logged out in: ${min}:${sec}`;
+
+    // When 0 seconds, stop timer and log out user
+    if (time === 0) {
+      clearInterval(timer);
+      mainContainer.classList.add("hidden");
+      username.classList.remove("hidden");
+      password.classList.remove("hidden");
+      loginButton.classList.remove("hidden");
+      logoutButton.classList.add("hidden");
+      welcomeText.innerHTML = "Log in to get started";
+      username.value = "";
+      password.value = "";
+      username.blur();
+    }
+    time--;
+  };
+
+  let time = 600;
+
+  // Call the timer every second
+  tick();
+  const timer = setInterval(tick, 1000);
+
+  return timer;
+};
+
+// function to format currencies
+const formattedCur = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(value);
+};
 
 // function that calculates the balance (part of the update UI functions)
 const calculateBalance = function (acc) {
-  const balanceTotal = acc.movements.reduce((total, num) => total + num);
-  accountBalance.innerHTML = `${formatter.format(balanceTotal)}`;
-  acc.balance = balanceTotal;
+  acc.balance = acc.movements.reduce((total, num) => total + num, 0);
+  accountBalance.innerHTML = formattedCur(
+    acc.balance,
+    acc.locale,
+    acc.currency
+  );
 };
 
 // function that calculates the deposits (part of the update UI functions)
@@ -84,8 +123,8 @@ const calculateBalance = function (acc) {
 const calculateDeposits = function (acc) {
   const amountIn = acc.movements
     .filter((mov) => mov > 0)
-    .reduce((total, num) => total + num);
-  gotInAmount.innerHTML = `${formatter.format(amountIn)}`;
+    .reduce((total, num) => total + num, 0);
+  gotInAmount.innerHTML = formattedCur(amountIn, acc.locale, acc.currency);
 };
 
 // function that calculates the withdrawals (part of the update UI functions)
@@ -94,7 +133,11 @@ const calculateWithdrawals = function (acc) {
   const amountOut = acc.movements
     .filter((mov) => mov < 0)
     .reduce((total, num) => total + num, 0);
-  gotOutAmount.innerHTML = `${formatter.format(Math.abs(amountOut))}`;
+  gotOutAmount.innerHTML = formattedCur(
+    Math.abs(amountOut),
+    acc.locale,
+    acc.currency
+  );
 };
 
 // function that calculates the deposits (part of the update UI functions)
@@ -104,7 +147,7 @@ const calculateInterest = function (acc) {
     .filter((mov) => mov > 0)
     .map((dep) => (dep * acc.interestRate) / 100)
     .reduce((acc, int) => acc + int, 0);
-  interestAmount.innerHTML = `${formatter.format(interests)}`;
+  interestAmount.innerHTML = formattedCur(interests, acc.locale, acc.currency);
 };
 
 // function that displays the movements (part of the update UI functions)
@@ -116,9 +159,10 @@ const displayMovements = function (acc, sort = false) {
     : acc.movements;
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? "deposit" : "withdrawal";
+    const formattedMov = formattedCur(mov, acc.locale, acc.currency);
     const sumHTML = `<div class="transaction">
         <div class="actionType ${type}">${type}</div>
-        <div class="actionAmount">${formatter.format(mov)}</div>
+        <div class="actionAmount">${formattedMov}</div>
       </div>`;
     accountSummary.insertAdjacentHTML("afterbegin", sumHTML);
   });
@@ -157,6 +201,25 @@ loginButton.addEventListener("click", function (e) {
     welcomeText.innerHTML = `Welcome back, ${
       accountActive.owner.split(" ")[0]
     }!`;
+    // this is the function i will use to get current date
+    const today = new Date();
+    const options = {
+      hour: "numeric",
+      minute: "numeric",
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    };
+    const todayDate = new Intl.DateTimeFormat(
+      accountActive.locale,
+      options
+    ).format(today);
+    balanceDate.innerHTML = `As of: ${todayDate}`;
+
+    // timer starts
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
+
     username.classList.add("hidden");
     password.classList.add("hidden");
     loginButton.classList.add("hidden");
@@ -207,6 +270,8 @@ transferButton.addEventListener("click", function (ev) {
       "The information you have entered appear to not be correct.\n Make sure to enter the correct username you want to transfer that amount of money to\n and the correct amount of money to be transferred.";
     popupHeader.innerHTML = `Incorrect Information!`;
   }
+  clearInterval(timer);
+  timer = startLogOutTimer();
   updateUI(accountActive);
 });
 
@@ -228,6 +293,8 @@ requestButton.addEventListener("click", function (e) {
     loanAmount.innerHTML = "";
     loanAmount.blur();
   }
+  clearInterval(timer);
+  timer = startLogOutTimer();
 });
 
 // Deleting the account event
