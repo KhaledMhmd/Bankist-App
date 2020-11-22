@@ -20,8 +20,8 @@ const account2 = {
 };
 
 const account3 = {
-  owner: "Steven Thomas Williams",
-  movements: [200, -200, 340, -300, -20, 50, 400, -460],
+  owner: "Hassan Mohamed",
+  movements: [1000, 200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   password: 3333,
 };
