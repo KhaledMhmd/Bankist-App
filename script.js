@@ -21,9 +21,11 @@ const account2 = {
 
 const account3 = {
   owner: "Hassan Mohamed",
-  movements: [1000, 200, -200, 340, -300, -20, 50, 400, -460],
+  movements: [1200, -200, 2340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   password: 3333,
+  locale: "en-GB",
+  currency: "EUR",
 };
 
 const account4 = {
@@ -31,6 +33,8 @@ const account4 = {
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   password: 4444,
+  locale: "en-US",
+  currency: "USD",
 };
 const accounts = [account1, account2, account3, account4];
 
